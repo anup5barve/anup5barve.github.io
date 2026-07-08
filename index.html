@@ -137,12 +137,28 @@ p+p{margin-top:1em}
   padding:6px 14px;color:var(--sea);background:#fff;
 }
 
-/* projects */
-.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:8px}
+/* projects carousel */
+.proj-carousel{position:relative;margin-top:8px}
+.proj-track{
+  display:flex;gap:26px;overflow-x:auto;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;
+  padding:4px 2px 18px;
+  scrollbar-width:thin;scrollbar-color:var(--fog-deep) transparent;
+}
 .proj{
   background:#fff;border:1px solid var(--fog);border-radius:4px;
   padding:28px 26px 24px;display:flex;flex-direction:column;
+  flex:0 0 calc(50% - 13px);scroll-snap-align:start;min-width:0;
 }
+.proj-nav{display:flex;gap:10px;justify-content:flex-end;margin-bottom:20px}
+.proj-btn{
+  font-family:var(--mono);font-size:1rem;line-height:1;
+  width:42px;height:42px;border-radius:3px;cursor:pointer;
+  border:1px solid var(--fog-deep);background:#fff;color:var(--sea);
+  transition:background .2s,color .2s,opacity .2s;
+}
+.proj-btn:hover:not(:disabled){background:var(--sea);color:#fff}
+.proj-btn:disabled{opacity:.35;cursor:default}
 .proj-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;display:block;margin-bottom:10px}
 .proj h3{margin-bottom:12px}
 .proj ul{margin:0 0 18px 18px;flex:1}
@@ -217,7 +233,7 @@ footer .sec-eyebrow{color:var(--amber)}
 
 @media(max-width:760px){
   .pipeline{grid-template-columns:1fr}
-  .proj-grid{grid-template-columns:1fr}
+  .proj{flex:0 0 100%}
   .pub{grid-template-columns:1fr;gap:6px}
   .xp{grid-template-columns:1fr;gap:6px}
   .nav-links{gap:12px}
@@ -363,29 +379,31 @@ footer .sec-eyebrow{color:var(--amber)}
     forced by an African Easterly Wave that operational global models failed to capture, and
     Arctic ice-fog life cycles at the ARM North Slope of Alaska site.
   </p>
-</section>
 
-  <div style="margin-top:48px;padding-top:34px;border-top:1px dashed var(--fog-deep)">
-    <p class="sec-eyebrow">Earlier research · IIT Madras</p>
-    <h3 style="margin-bottom:10px">Particle-laden coaxial turbulent jets</h3>
-    <p style="max-width:68ch;font-size:.95rem;color:#33454e">
-      As a graduate research assistant at IIT Madras, I conducted LES and RANS simulations
-      of particle-laden coaxial turbulent jets using OpenFOAM, investigating
-      turbulence–particle interactions. I developed and modified subgrid-scale turbulence
-      parameterizations (subgrid kinetic energy model) to improve the representation of
-      turbulent mixing in multiphase flow simulations, and applied an Eulerian–Lagrangian
-      framework to study two-way coupling between the carrier phase and dispersed particles.
-      The simulations were validated against experimental benchmarks, followed by parametric
-      studies of particle dispersion and turbulent transport under varying flow conditions.
-      This work resulted in a peer-reviewed publication in Physics of Fluids selected as an
-      <a href="https://doi.org/10.1063/5.0017663">Editor's Pick</a>.
-    </p>
-  </div>
+  <h2 style="margin-top:64px">Particle-laden coaxial turbulent jets</h2>
+  <p class="lede">
+    As a graduate research assistant at IIT Madras, I conducted LES and RANS simulations
+    of particle-laden coaxial turbulent jets using OpenFOAM, investigating
+    turbulence–particle interactions. I developed and modified subgrid-scale turbulence
+    parameterizations (subgrid kinetic energy model) to improve the representation of
+    turbulent mixing in multiphase flow simulations, and applied an Eulerian–Lagrangian
+    framework to study two-way coupling between the carrier phase and dispersed particles.
+    The simulations were validated against experimental benchmarks, followed by parametric
+    studies of particle dispersion and turbulent transport under varying flow conditions.
+    This work resulted in a peer-reviewed publication in Physics of Fluids selected as an
+    <a href="https://doi.org/10.1063/5.0017663">Editor's Pick</a>.
+  </p>
+</section>
 
 <section id="projects" class="wrap reveal">
   <p class="sec-eyebrow">Projects</p>
   <h2>AI/ML projects</h2>
-  <div class="proj-grid">
+  <div class="proj-carousel">
+  <div class="proj-nav">
+    <button class="proj-btn proj-prev" aria-label="Previous projects">&lt;</button>
+    <button class="proj-btn proj-next" aria-label="Next projects">&gt;</button>
+  </div>
+  <div class="proj-track" tabindex="0" aria-label="AI and ML projects, scrollable list">
     <div class="proj">
       <span class="proj-tag">Surrogate Modeling</span>
       <h3>AI/ML surrogates for physics-based simulation with uncertainty quantification</h3>
@@ -409,6 +427,90 @@ footer .sec-eyebrow{color:var(--amber)}
         <span>PyTorch</span><span>Multi-task learning</span><span>Neural architecture design</span>
       </div>
     </div>
+    <div class="proj">
+      <span class="proj-tag">Graph Neural Networks</span>
+      <h3>GNN model for NCAA March Madness tournament prediction</h3>
+      <ul>
+        <li>Built an end-to-end Graph Neural Network system in PyTorch Geometric to predict NCAA tournament outcomes from regular-season game graphs spanning 2003–2024 (Kaggle March Machine Learning Mania dataset).</li>
+        <li>Engineered four team node feature sets (raw box-score averages, differential metrics, advanced efficiency ratings, and combined) and constructed seasonal undirected game graphs to capture strength-of-schedule and relational team dynamics.</li>
+        <li>Trained a two-layer GCN + MLP classifier learning team embeddings, achieving up to 69% validation accuracy and outperforming seed-only baselines in full 2023 bracket simulation.</li>
+        <li>Developed a modular, reproducible pipeline: automated graph building, multi-season batching, early-stopping training, and round-by-round bracket simulation.</li>
+      </ul>
+      <div class="proj-skills">
+        <span>PyTorch Geometric</span><span>GCN</span><span>Feature engineering</span><span>ML pipelines</span>
+      </div>
+    </div>
+    <div class="proj">
+      <span class="proj-tag">Applied ML</span>
+      <h3>Daily menu prediction using neural networks</h3>
+      <ul>
+        <li>Designed a data-driven pipeline to classify acceptable daily menus from real-world nutritional and ingredient datasets.</li>
+        <li>Performed QA/QC and preprocessing — grouping ingredient variables, validating nutritional fields, and constructing predictor vectors from Breakfast–Lunch–Dinner combinations.</li>
+        <li>Engineered target labels based on DRI compliance and upper-quartile meal ratings; trained a PyTorch MLP classifier and visualized results to communicate insights.</li>
+      </ul>
+      <div class="proj-skills">
+        <span>PyTorch</span><span>Data cleaning</span><span>Feature engineering</span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <h2 style="margin-top:64px">CFD &amp; experimental projects</h2>
+  <div class="proj-carousel">
+  <div class="proj-nav">
+    <button class="proj-btn proj-prev" aria-label="Previous projects">&lt;</button>
+    <button class="proj-btn proj-next" aria-label="Next projects">&gt;</button>
+  </div>
+  <div class="proj-track" tabindex="0" aria-label="CFD and experimental projects, scrollable list">
+    <div class="proj">
+      <span class="proj-tag">Solver Development</span>
+      <h3>CFD solver development in C++</h3>
+      <ul>
+        <li>Developed an incompressible finite-volume flow solver in C++ and tested it for flow over a flat plate.</li>
+        <li>Applied the Semi-Implicit Method for Pressure-Linked Equations (SIMPLE) to solve the Navier–Stokes equations.</li>
+        <li>Visualized and analyzed results with Gnuplot and ParaView to understand flow and thermal behavior.</li>
+      </ul>
+      <div class="proj-skills">
+        <span>C++</span><span>Finite volume method</span>
+      </div>
+    </div>
+    <div class="proj">
+      <span class="proj-tag">Solver Development</span>
+      <h3>2D Euler solver for supersonic airfoil flow</h3>
+      <ul>
+        <li>Developed a 2D Euler solver to simulate supersonic flow over a diamond-shaped airfoil.</li>
+        <li>Designed and implemented a body-fitted grid to accurately represent the airfoil geometry.</li>
+        <li>Tested on a 71×48 grid, achieving stable solutions with second-order accuracy and validating flow behavior.</li>
+      </ul>
+      <div class="proj-skills">
+        <span>FORTRAN</span><span>Mesh generation</span><span>Finite volume discretization</span>
+      </div>
+    </div>
+    <div class="proj">
+      <span class="proj-tag">Turbulence Modeling</span>
+      <h3>RANS modeling of Poiseuille channel flow</h3>
+      <ul>
+        <li>Developed a k–ε solver for Poiseuille channel flow in MATLAB.</li>
+        <li>Modeled wall effects using appropriate wall functions for accurate turbulence representation.</li>
+        <li>Validated the solver's performance through comparative analysis with theoretical results.</li>
+      </ul>
+      <div class="proj-skills">
+        <span>MATLAB</span><span>Turbulence modeling</span>
+      </div>
+    </div>
+    <div class="proj">
+      <span class="proj-tag">Experimental</span>
+      <h3>Effect of number of holes on discharge coefficient in a perforated orifice plate</h3>
+      <ul>
+        <li>Designed and analyzed the effect of varying the number of holes on the coefficient of discharge in pipe flow.</li>
+        <li>Used SolidWorks to design the orifice plates and conducted CFD analysis in ANSYS Fluent.</li>
+        <li>Experimentally determined the vena contracta location and validated the results.</li>
+      </ul>
+      <div class="proj-skills">
+        <span>SolidWorks</span><span>ANSYS Fluent</span><span>Project management</span>
+      </div>
+    </div>
+  </div>
   </div>
 </section>
 
@@ -641,6 +743,26 @@ footer .sec-eyebrow{color:var(--amber)}
 <script>
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// projects carousels
+document.querySelectorAll('.proj-carousel').forEach(car=>{
+  const track=car.querySelector('.proj-track');
+  const prev=car.querySelector('.proj-prev');
+  const next=car.querySelector('.proj-next');
+  function cardStep(){
+    const card=track.querySelector('.proj');
+    return card?card.getBoundingClientRect().width+26:320;
+  }
+  function updateBtns(){
+    prev.disabled=track.scrollLeft<=2;
+    next.disabled=track.scrollLeft>=track.scrollWidth-track.clientWidth-2;
+  }
+  prev.addEventListener('click',()=>track.scrollBy({left:-cardStep(),behavior:'smooth'}));
+  next.addEventListener('click',()=>track.scrollBy({left:cardStep(),behavior:'smooth'}));
+  track.addEventListener('scroll',updateBtns,{passive:true});
+  window.addEventListener('resize',updateBtns);
+  updateBtns();
+});
 </script>
 </body>
 </html>
