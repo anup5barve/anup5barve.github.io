@@ -89,23 +89,27 @@ h1{
 .btn-ghost{border-color:rgba(220,227,230,.5);color:var(--fog)}
 .btn-ghost:hover{border-color:var(--fog);border-bottom-color:var(--fog)}
 
-/* ---------- signature: stratus-to-fog schematic ---------- */
-.schematic{display:block;width:100%;height:auto;margin-top:26px;position:relative;z-index:1}
-.axis-label{font-family:var(--mono);font-size:11px;fill:#9db3bb}
-.zb-label{font-family:var(--mono);font-size:11px;fill:var(--amber);letter-spacing:.05em}
-.stage-label{font-family:var(--mono);font-size:10.5px;fill:#8fa8b1;letter-spacing:.1em}
-@media(prefers-reduced-motion:no-preference){
-  .cloud-band{animation:lower 7s cubic-bezier(.4,.05,.3,1) .6s forwards}
-  .zb-line,.zb-text{animation:lowerLine 7s cubic-bezier(.4,.05,.3,1) .6s forwards}
-  .fogfill{opacity:0;animation:fogin 3s ease 6.2s forwards}
-  @keyframes lower{to{transform:translateY(96px)}}
-  @keyframes lowerLine{to{transform:translateY(96px)}}
-  @keyframes fogin{to{opacity:.5}}
+/* ---------- hero portrait & figure placeholders ---------- */
+.hero-grid{display:grid;grid-template-columns:1fr 300px;gap:56px;align-items:center}
+.portrait{
+  position:relative;width:100%;aspect-ratio:4/5;
+  border:1px solid rgba(220,227,230,.35);border-radius:6px;
+  background:rgba(220,227,230,.07);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
 }
-@media(prefers-reduced-motion:reduce){
-  .cloud-band,.zb-line,.zb-text{transform:translateY(96px)}
-  .fogfill{opacity:.5}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}
+.portrait .fig-note{position:absolute;font-family:var(--mono);font-size:.72rem;color:#9db3bb;text-align:center;padding:0 12px}
+.fig{
+  position:relative;width:100%;aspect-ratio:16/10;margin-bottom:16px;
+  background:var(--paper);border:1px dashed var(--fog-deep);border-radius:3px;
+  overflow:hidden;display:flex;align-items:center;justify-content:center;
 }
+.fig img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}
+.fig .fig-note{
+  position:absolute;font-family:var(--mono);font-size:.7rem;color:#8aa0a9;
+  text-align:center;padding:0 10px;
+}
+.split{display:grid;grid-template-columns:1.4fr 1fr;gap:36px;align-items:start}
 
 /* ---------- sections ---------- */
 section{padding:78px 0}
@@ -233,6 +237,9 @@ footer .sec-eyebrow{color:var(--amber)}
 
 @media(max-width:760px){
   .pipeline{grid-template-columns:1fr}
+  .hero-grid{grid-template-columns:1fr;gap:36px}
+  .portrait{max-width:260px}
+  .split{grid-template-columns:1fr}
   .proj{flex:0 0 100%}
   .pub{grid-template-columns:1fr;gap:6px}
   .xp{grid-template-columns:1fr;gap:6px}
@@ -251,6 +258,7 @@ footer .sec-eyebrow{color:var(--amber)}
       <a href="#projects">Projects</a>
       <a href="#publications">Publications</a>
       <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </div>
@@ -258,75 +266,30 @@ footer .sec-eyebrow{color:var(--amber)}
 </nav>
 
 <header class="hero" id="top">
-  <div class="hero-inner">
-    <p class="eyebrow">PhD Candidate · Computational Fluid Dynamics &amp; Atmospheric Modeling</p>
-    <h1>Anup Barve</h1>
-    <p class="hero-sub">
-    I solve hard problems by building <strong>physics-based simulations</strong> — from
-    high-fidelity CFD of turbulent flows to multiscale modeling of clouds and fog — on
-    HPC solvers, complemented by hands-on
-    <strong>AI/ML projects</strong> in surrogate modeling and deep learning.
-    Currently a PhD candidate in Mechanical Engineering at the
-    <strong>University of Minnesota</strong>, advised by Prof. Lian Shen.
-    </p>
-    <div class="hero-cta">
-      <a class="btn btn-solid" href="cv.pdf">Download CV</a>
-      <a class="btn btn-ghost" href="#publications">Publications</a>
+  <div class="hero-inner" style="padding-bottom:84px">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">PhD Candidate · Computational Fluid Dynamics &amp; Atmospheric Modeling</p>
+        <h1>Anup Barve</h1>
+        <p class="hero-sub">
+        I solve hard problems by building <strong>physics-based simulations</strong> — from
+        high-fidelity CFD of turbulent flows to multiscale modeling of clouds and fog — on
+        HPC solvers, complemented by hands-on
+        <strong>AI/ML projects</strong> in surrogate modeling and deep learning.
+        Currently a PhD candidate in Mechanical Engineering at the
+        <strong>University of Minnesota</strong>, advised by Prof. Lian Shen.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-solid" href="cv.pdf">Download CV</a>
+          <a class="btn btn-ghost" href="#publications">Publications</a>
+        </div>
+      </div>
+      <div class="portrait">
+        <span class="fig-note">add images/profile.jpg<br>(your photo, portrait orientation)</span>
+        <img src="images/profile.jpg" alt="Anup Barve" onerror="this.remove()">
+      </div>
     </div>
   </div>
-
-  <!-- Signature: stratus-lowering-to-fog schematic (animated) -->
-  <svg class="schematic" viewBox="0 0 1100 260" xmlns="http://www.w3.org/2000/svg" role="img"
-       aria-label="Schematic of a stratus cloud base lowering to the surface, transitioning to fog">
-    <defs>
-      <linearGradient id="cloud" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#dce3e6" stop-opacity=".95"/>
-        <stop offset="100%" stop-color="#dce3e6" stop-opacity=".25"/>
-      </linearGradient>
-      <linearGradient id="fogg" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#dce3e6" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#dce3e6" stop-opacity=".85"/>
-      </linearGradient>
-    </defs>
-
-    <!-- height axis -->
-    <line x1="70" y1="20" x2="70" y2="230" stroke="#5b7a86" stroke-width="1"/>
-    <line x1="65" y1="40"  x2="75" y2="40"  stroke="#5b7a86"/>
-    <line x1="65" y1="135" x2="75" y2="135" stroke="#5b7a86"/>
-    <line x1="65" y1="230" x2="75" y2="230" stroke="#5b7a86"/>
-    <text class="axis-label" x="58" y="44"  text-anchor="end">400 m</text>
-    <text class="axis-label" x="58" y="139" text-anchor="end">200 m</text>
-    <text class="axis-label" x="58" y="234" text-anchor="end">0 m</text>
-
-    <!-- stage labels -->
-    <text class="stage-label" x="240" y="252" text-anchor="middle">STRATUS</text>
-    <text class="stage-label" x="560" y="252" text-anchor="middle">LOWERING</text>
-    <text class="stage-label" x="880" y="252" text-anchor="middle">FOG</text>
-
-    <!-- cloud band that lowers -->
-    <g class="cloud-band">
-      <rect x="90" y="36" width="990" height="64" fill="url(#cloud)" rx="8"/>
-      <ellipse cx="260" cy="40" rx="120" ry="16" fill="#dce3e6" opacity=".6"/>
-      <ellipse cx="620" cy="38" rx="150" ry="14" fill="#dce3e6" opacity=".5"/>
-      <ellipse cx="930" cy="41" rx="110" ry="15" fill="#dce3e6" opacity=".55"/>
-    </g>
-
-    <!-- cloud base line -->
-    <g class="zb-line">
-      <line x1="90" y1="102" x2="1080" y2="102" stroke="#d9a441" stroke-width="1.6" stroke-dasharray="7 6"/>
-    </g>
-    <g class="zb-text">
-      <text class="zb-label" x="1078" y="94" text-anchor="end">cloud base  z_b</text>
-    </g>
-
-    <!-- fog fill near surface -->
-    <rect class="fogfill" x="90" y="150" width="990" height="80" fill="url(#fogg)"/>
-
-    <!-- sea surface -->
-    <line x1="70" y1="230" x2="1080" y2="230" stroke="#9db3bb" stroke-width="1.4"/>
-    <path d="M90 236 q14 -5 28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0"
-          stroke="#5b7a86" fill="none" stroke-width="1" opacity=".7"/>
-  </svg>
 </header>
 
 <main>
@@ -344,6 +307,10 @@ footer .sec-eyebrow{color:var(--amber)}
   <div class="pipeline">
     <div class="stage">
       <span class="stage-tag">Mesoscale</span>
+      <div class="fig">
+        <span class="fig-note">add images/mesoscale.png<br>(e.g. synoptic / COAMPS map)</span>
+        <img src="images/mesoscale.png" alt="Regional-scale forcing: synoptic map" onerror="this.remove()">
+      </div>
       <h3>Large-scale dynamics</h3>
       <p>Python-based dynamic downscaling of ERA5 reanalysis and COAMPS forecasts supplies
       time-varying, regional-scale forcing, so simulated events evolve under realistic
@@ -351,6 +318,10 @@ footer .sec-eyebrow{color:var(--amber)}
     </div>
     <div class="stage">
       <span class="stage-tag">Microscale</span>
+      <div class="fig">
+        <span class="fig-note">add images/les.png<br>(e.g. LES ql / TKE snapshot)</span>
+        <img src="images/les.png" alt="Large-eddy simulation of the marine boundary layer" onerror="this.remove()">
+      </div>
       <h3>Wall-modeled LES</h3>
       <p>A high-performance parallel FORTRAN/MPI LES solver resolves the
       turbulence–radiation–entrainment interplay that governs stratus lowering, fog-top
@@ -358,6 +329,10 @@ footer .sec-eyebrow{color:var(--amber)}
     </div>
     <div class="stage">
       <span class="stage-tag">Droplet scale</span>
+      <div class="fig">
+        <span class="fig-note">add images/microphysics.png<br>(e.g. droplet trajectories / Nc field)</span>
+        <img src="images/microphysics.png" alt="Lagrangian cloud droplet trajectories" onerror="this.remove()">
+      </div>
       <h3>Lagrangian &amp; bulk microphysics</h3>
       <p>Lagrangian computational droplets track activation, condensational growth,
       coalescence, and precipitation formation along real trajectories, complemented by
@@ -366,11 +341,50 @@ footer .sec-eyebrow{color:var(--amber)}
   </div>
   <p class="pipeline-note">mesoscale forcing → LES turbulence → droplet trajectories, two-way coupled</p>
 
-  <div class="campaigns">
-    <span class="chip">FATIMA · Grand Banks 2022</span>
-    <span class="chip">FATIMA · Yellow Sea 2023</span>
-    <span class="chip">MAGPIE · Barbados</span>
-    <span class="chip">ARM · North Slope of Alaska</span>
+  <h2 style="margin-top:64px">Field campaigns</h2>
+  <div class="proj-carousel">
+  <div class="proj-nav">
+    <button class="proj-btn proj-prev" aria-label="Previous campaigns">&lt;</button>
+    <button class="proj-btn proj-next" aria-label="Next campaigns">&gt;</button>
+  </div>
+  <div class="proj-track" tabindex="0" aria-label="Field campaigns, scrollable list">
+    <div class="proj">
+      <span class="proj-tag">FATIMA · Grand Banks 2022</span>
+      <div class="fig">
+        <span class="fig-note">add images/fatima-gb.png</span>
+        <img src="images/fatima-gb.png" alt="FATIMA Grand Banks campaign" onerror="this.remove()">
+      </div>
+      <h3>Marine fog over the Grand Banks</h3>
+      <p style="font-size:.93rem;color:#33454e">[Placeholder — 2–3 sentences on the campaign and your role: simulation planning, LES of observed fog events, validation against ship and Sable Island observations.]</p>
+    </div>
+    <div class="proj">
+      <span class="proj-tag">FATIMA · Yellow Sea 2023</span>
+      <div class="fig">
+        <span class="fig-note">add images/fatima-ys.png</span>
+        <img src="images/fatima-ys.png" alt="FATIMA Yellow Sea campaign" onerror="this.remove()">
+      </div>
+      <h3>Stratus-to-fog transitions over the Yellow Sea</h3>
+      <p style="font-size:.93rem;color:#33454e">[Placeholder — 2–3 sentences on IOP-5 stratus-lowering fog, L³ simulations, and validation against W-band radar and ceilometer observations.]</p>
+    </div>
+    <div class="proj">
+      <span class="proj-tag">MAGPIE · Barbados</span>
+      <div class="fig">
+        <span class="fig-note">add images/magpie.png</span>
+        <img src="images/magpie.png" alt="MAGPIE campaign, Barbados" onerror="this.remove()">
+      </div>
+      <h3>Deep convection and the trade-wind boundary layer</h3>
+      <p style="font-size:.93rem;color:#33454e">[Placeholder — 2–3 sentences on African Easterly Wave–forced convection over Barbados and coastal topography effects at Ragged Point.]</p>
+    </div>
+    <div class="proj">
+      <span class="proj-tag">ARM · North Slope of Alaska</span>
+      <div class="fig">
+        <span class="fig-note">add images/arm-nsa.png</span>
+        <img src="images/arm-nsa.png" alt="ARM North Slope of Alaska site" onerror="this.remove()">
+      </div>
+      <h3>Arctic ice-fog life cycles</h3>
+      <p style="font-size:.93rem;color:#33454e">[Placeholder — 2–3 sentences on bulk ice microphysics implementation and validation against ARM NSA observations.]</p>
+    </div>
+  </div>
   </div>
   <p style="margin-top:22px;max-width:68ch">
     The framework is validated against multi-platform observations — W-band radar, ceilometer
@@ -381,6 +395,7 @@ footer .sec-eyebrow{color:var(--amber)}
   </p>
 
   <h2 style="margin-top:64px">Particle-laden coaxial turbulent jets</h2>
+  <div class="split">
   <p class="lede">
     As a graduate research assistant at IIT Madras, I conducted LES and RANS simulations
     of particle-laden coaxial turbulent jets using OpenFOAM, investigating
@@ -393,6 +408,11 @@ footer .sec-eyebrow{color:var(--amber)}
     This work resulted in a peer-reviewed publication in Physics of Fluids selected as an
     <a href="https://doi.org/10.1063/5.0017663">Editor's Pick</a>.
   </p>
+  <div class="fig" style="aspect-ratio:4/3;margin-bottom:0">
+    <span class="fig-note">add images/jets.png<br>(e.g. particle dispersion / jet visualization)</span>
+    <img src="images/jets.png" alt="LES of particle-laden coaxial turbulent jets" onerror="this.remove()">
+  </div>
+  </div>
 </section>
 
 <section id="projects" class="wrap reveal">
@@ -611,16 +631,15 @@ footer .sec-eyebrow{color:var(--amber)}
 </section>
 
 <section id="experience" class="wrap reveal">
-  <p class="sec-eyebrow">Experience &amp; Education</p>
-  <h2>Background</h2>
+  <p class="sec-eyebrow">Experience</p>
+  <h2>Experience</h2>
 
   <div class="xp">
-    <div class="xp-when">Sep 2021 — Jul 2026 (exp.)</div>
+    <div class="xp-when">Sep 2021 — Present</div>
     <div>
-      <h3>PhD Candidate, Mechanical Engineering</h3>
-      <p class="org">University of Minnesota — Twin Cities · Advisor: Prof. Lian Shen</p>
+      <h3>Graduate Research Assistant</h3>
+      <p class="org">University of Minnesota — Twin Cities</p>
       <ul>
-        <li>Dissertation: exploring cloud and fog processes through multi-scale coupled modeling frameworks.</li>
         <li>Developed a parallel FORTRAN/MPI LES solver with SLURM-based workflow automation for scalable HPC deployment; Lagrangian and bulk (liquid + ice) cloud microphysics.</li>
         <li>Built Python dynamic-downscaling workflows from ERA5 and COAMPS to force cloud-resolving and convection-permitting simulations.</li>
         <li>Participated in the FATIMA and MAGPIE international field campaigns — proposal development, simulation planning, data analysis, and sponsor review meetings.</li>
@@ -647,6 +666,22 @@ footer .sec-eyebrow{color:var(--amber)}
       <p class="org">Baker Hughes · Bangalore, India</p>
       <ul>
         <li>Developed machine-learning predictive models for early gas-turbine failure detection, reducing downtime, replacement needs, and associated CO₂ emissions.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="education" class="wrap reveal">
+  <p class="sec-eyebrow">Education</p>
+  <h2>Education</h2>
+
+  <div class="xp">
+    <div class="xp-when">Sep 2021 — Jul 2026 (exp.)</div>
+    <div>
+      <h3>Ph.D., Mechanical Engineering</h3>
+      <p class="org">University of Minnesota — Twin Cities · Advisor: Prof. Lian Shen</p>
+      <ul>
+        <li>Dissertation: exploring cloud and fog processes through multi-scale coupled modeling frameworks.</li>
       </ul>
     </div>
   </div>
