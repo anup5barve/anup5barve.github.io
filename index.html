@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anup Barve — Computational Atmospheric Scientist</title>
+<meta name="description" content="Anup Barve — PhD candidate at the University of Minnesota. Multiscale simulation of marine fog and cloudy boundary layers: mesoscale dynamics, wall-modeled LES, and Lagrangian cloud microphysics.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#101820;
+  --sea:#16323e;
+  --fog:#dce3e6;
+  --fog-deep:#b8c4c9;
+  --paper:#f4f7f8;
+  --teal:#2e7d8c;
+  --amber:#d9a441;
+  --maxw:1060px;
+  --display:'Bricolage Grotesque',sans-serif;
+  --body:'IBM Plex Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);
+  color:var(--ink);
+  background:var(--paper);
+  line-height:1.65;
+  font-size:17px;
+}
+a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(46,125,140,.35);transition:border-color .2s,color .2s}
+a:hover{border-bottom-color:var(--teal)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:2px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+/* ---------- nav ---------- */
+nav{
+  position:sticky;top:0;z-index:20;
+  background:rgba(244,247,248,.88);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--fog);
+}
+.nav-inner{display:flex;align-items:baseline;justify-content:space-between;padding:14px 24px;max-width:var(--maxw);margin:0 auto}
+.nav-name{font-family:var(--mono);font-size:.85rem;letter-spacing:.06em;color:var(--ink);border:none}
+.nav-links{display:flex;gap:20px}
+.nav-links a{font-family:var(--mono);font-size:.78rem;letter-spacing:.05em;color:var(--sea);border:none}
+.nav-links a:hover{color:var(--teal)}
+
+/* ---------- hero ---------- */
+header.hero{
+  background:linear-gradient(180deg,var(--sea) 0%,#1d4050 55%,#39606d 100%);
+  color:var(--fog);
+  position:relative;
+  overflow:hidden;
+}
+.hero-inner{
+  max-width:var(--maxw);margin:0 auto;
+  padding:84px 24px 0;
+  position:relative;z-index:2;
+}
+.eyebrow{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--amber);margin-bottom:18px;
+}
+h1{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:clamp(2.4rem,6vw,4.2rem);
+  line-height:1.04;
+  letter-spacing:-.015em;
+  color:#fff;
+  max-width:14ch;
+}
+.hero-sub{
+  margin-top:22px;max-width:58ch;
+  font-size:1.05rem;color:#cfdade;
+}
+.hero-sub strong{color:#fff;font-weight:600}
+.hero-cta{margin:30px 0 8px;display:flex;gap:14px;flex-wrap:wrap}
+.btn{
+  font-family:var(--mono);font-size:.82rem;letter-spacing:.05em;
+  padding:11px 20px;border-radius:3px;border:1px solid transparent;
+}
+.btn-solid{background:var(--amber);color:var(--ink)}
+.btn-solid:hover{background:#e5b45c;border-bottom-color:transparent}
+.btn-ghost{border-color:rgba(220,227,230,.5);color:var(--fog)}
+.btn-ghost:hover{border-color:var(--fog);border-bottom-color:var(--fog)}
+
+/* ---------- signature: stratus-to-fog schematic ---------- */
+.schematic{display:block;width:100%;height:auto;margin-top:26px;position:relative;z-index:1}
+.axis-label{font-family:var(--mono);font-size:11px;fill:#9db3bb}
+.zb-label{font-family:var(--mono);font-size:11px;fill:var(--amber);letter-spacing:.05em}
+.stage-label{font-family:var(--mono);font-size:10.5px;fill:#8fa8b1;letter-spacing:.1em}
+@media(prefers-reduced-motion:no-preference){
+  .cloud-band{animation:lower 7s cubic-bezier(.4,.05,.3,1) .6s forwards}
+  .zb-line,.zb-text{animation:lowerLine 7s cubic-bezier(.4,.05,.3,1) .6s forwards}
+  .fogfill{opacity:0;animation:fogin 3s ease 6.2s forwards}
+  @keyframes lower{to{transform:translateY(96px)}}
+  @keyframes lowerLine{to{transform:translateY(96px)}}
+  @keyframes fogin{to{opacity:.5}}
+}
+@media(prefers-reduced-motion:reduce){
+  .cloud-band,.zb-line,.zb-text{transform:translateY(96px)}
+  .fogfill{opacity:.5}
+}
+
+/* ---------- sections ---------- */
+section{padding:78px 0}
+section+section{border-top:1px solid var(--fog)}
+.sec-eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--teal);margin-bottom:12px;
+}
+h2{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(1.6rem,3.4vw,2.2rem);
+  letter-spacing:-.01em;margin-bottom:26px;color:var(--sea);
+}
+h3{font-family:var(--display);font-weight:600;font-size:1.12rem;color:var(--sea)}
+p+p{margin-top:1em}
+.lede{font-size:1.08rem;max-width:66ch}
+
+/* research pipeline */
+.pipeline{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--fog);border:1px solid var(--fog);margin-top:38px}
+.stage{background:var(--paper);padding:26px 24px 30px}
+.stage-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;display:block;margin-bottom:10px}
+.stage h3{margin-bottom:10px}
+.stage p{font-size:.93rem;color:#33454e}
+.pipeline-note{font-family:var(--mono);font-size:.78rem;color:#5b6f78;margin-top:14px}
+.campaigns{margin-top:34px;display:flex;gap:12px;flex-wrap:wrap}
+.chip{
+  font-family:var(--mono);font-size:.76rem;letter-spacing:.04em;
+  border:1px solid var(--fog-deep);border-radius:20px;
+  padding:6px 14px;color:var(--sea);background:#fff;
+}
+
+/* projects */
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:8px}
+.proj{
+  background:#fff;border:1px solid var(--fog);border-radius:4px;
+  padding:28px 26px 24px;display:flex;flex-direction:column;
+}
+.proj-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;display:block;margin-bottom:10px}
+.proj h3{margin-bottom:12px}
+.proj ul{margin:0 0 18px 18px;flex:1}
+.proj li{font-size:.93rem;color:#33454e;margin-bottom:8px}
+.proj-skills{display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--fog);padding-top:16px}
+.proj-skills span{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;
+  background:var(--paper);border:1px solid var(--fog-deep);
+  border-radius:3px;padding:3px 9px;color:var(--sea);
+}
+
+/* publications */
+.pub-group{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:#5b6f78;margin:38px 0 4px}
+.pub-group:first-of-type{margin-top:8px}
+.pub{
+  display:grid;grid-template-columns:110px 1fr;gap:20px;
+  padding:20px 0;border-bottom:1px solid var(--fog);
+}
+.pub:last-of-type{border-bottom:none}
+.pub-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--teal);padding-top:4px}
+.pub-tag .pick{color:var(--amber);display:block;margin-top:4px}
+.pub-body p{font-size:.95rem}
+.pub-body .authors{color:#42555e}
+.pub-body .title{font-weight:600;color:var(--sea)}
+.pub-body .venue{font-style:italic;color:#42555e}
+.pub-body .doi{font-family:var(--mono);font-size:.78rem}
+details.conf{margin-top:34px;border:1px solid var(--fog);border-radius:4px;background:#fff}
+details.conf summary{
+  cursor:pointer;padding:16px 22px;font-family:var(--mono);
+  font-size:.8rem;letter-spacing:.08em;color:var(--sea);list-style:none;
+}
+details.conf summary::before{content:"+ ";color:var(--amber)}
+details.conf[open] summary::before{content:"− "}
+details.conf ul{margin:0 22px 20px 40px}
+details.conf li{font-size:.9rem;color:#33454e;margin-bottom:8px}
+
+/* experience */
+.xp{display:grid;grid-template-columns:190px 1fr;gap:22px;padding:24px 0;border-bottom:1px solid var(--fog)}
+.xp:last-child{border-bottom:none}
+.xp-when{font-family:var(--mono);font-size:.78rem;color:#5b6f78;padding-top:5px}
+.xp h3{margin-bottom:2px}
+.xp .org{font-size:.92rem;color:var(--teal);margin-bottom:8px}
+.xp ul{margin:8px 0 0 18px}
+.xp li{font-size:.93rem;color:#33454e;margin-bottom:6px}
+.awards{margin-top:44px;background:#fff;border:1px solid var(--fog);border-radius:4px;padding:26px 26px 14px}
+.awards h3{margin-bottom:14px}
+.awards ul{list-style:none}
+.awards li{font-size:.92rem;color:#33454e;padding:8px 0;border-bottom:1px dashed var(--fog);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.awards li:last-child{border-bottom:none}
+.awards .yr{font-family:var(--mono);font-size:.78rem;color:#5b6f78;white-space:nowrap}
+
+/* skills */
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:34px;margin-top:8px}
+.skill-col h3{font-size:.98rem;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--fog)}
+.skill-col ul{list-style:none}
+.skill-col li{font-size:.92rem;padding:5px 0;color:#33454e}
+.skill-col li::before{content:"—";color:var(--amber);margin-right:9px;font-family:var(--mono)}
+
+/* contact / footer */
+footer{background:var(--sea);color:var(--fog);padding:70px 0 46px}
+footer h2{color:#fff}
+footer .sec-eyebrow{color:var(--amber)}
+.contact-links{display:flex;gap:26px;flex-wrap:wrap;margin-top:18px}
+.contact-links a{font-family:var(--mono);font-size:.85rem;color:var(--fog);border-bottom-color:rgba(220,227,230,.4)}
+.contact-links a:hover{color:#fff;border-bottom-color:#fff}
+.colophon{margin-top:56px;font-family:var(--mono);font-size:.72rem;color:#7e97a1}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+@media(max-width:760px){
+  .pipeline{grid-template-columns:1fr}
+  .proj-grid{grid-template-columns:1fr}
+  .pub{grid-template-columns:1fr;gap:6px}
+  .xp{grid-template-columns:1fr;gap:6px}
+  .nav-links{gap:12px}
+  .nav-links a:nth-child(n+4){display:none}
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Site">
+  <div class="nav-inner">
+    <a class="nav-name" href="#top">A. BARVE</a>
+    <div class="nav-links">
+      <a href="#research">Research</a>
+      <a href="#projects">Projects</a>
+      <a href="#publications">Publications</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <p class="eyebrow">Computational Atmospheric Scientist · PhD Candidate</p>
+    <h1>Anup Barve</h1>
+    <p class="hero-sub">
+      I build <strong>multiscale simulation frameworks for marine fog and the cloudy marine
+      boundary layer</strong> — coupling regional-scale weather, boundary-layer-resolving
+      large-eddy simulation, and Lagrangian cloud microphysics in a high-performance
+      FORTRAN/MPI solver, validated against the FATIMA and MAGPIE field campaigns.
+      PhD in Mechanical Engineering at the <strong>University of Minnesota</strong>,
+      advised by Prof. Lian Shen. Expected July 2026.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-solid" href="cv.pdf">Download CV</a>
+      <a class="btn btn-ghost" href="#publications">Publications</a>
+    </div>
+  </div>
+
+  <!-- Signature: stratus-lowering-to-fog schematic (animated) -->
+  <svg class="schematic" viewBox="0 0 1100 260" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Schematic of a stratus cloud base lowering to the surface, transitioning to fog">
+    <defs>
+      <linearGradient id="cloud" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#dce3e6" stop-opacity=".95"/>
+        <stop offset="100%" stop-color="#dce3e6" stop-opacity=".25"/>
+      </linearGradient>
+      <linearGradient id="fogg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#dce3e6" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#dce3e6" stop-opacity=".85"/>
+      </linearGradient>
+    </defs>
+
+    <!-- height axis -->
+    <line x1="70" y1="20" x2="70" y2="230" stroke="#5b7a86" stroke-width="1"/>
+    <line x1="65" y1="40"  x2="75" y2="40"  stroke="#5b7a86"/>
+    <line x1="65" y1="135" x2="75" y2="135" stroke="#5b7a86"/>
+    <line x1="65" y1="230" x2="75" y2="230" stroke="#5b7a86"/>
+    <text class="axis-label" x="58" y="44"  text-anchor="end">400 m</text>
+    <text class="axis-label" x="58" y="139" text-anchor="end">200 m</text>
+    <text class="axis-label" x="58" y="234" text-anchor="end">0 m</text>
+
+    <!-- stage labels -->
+    <text class="stage-label" x="240" y="252" text-anchor="middle">STRATUS</text>
+    <text class="stage-label" x="560" y="252" text-anchor="middle">LOWERING</text>
+    <text class="stage-label" x="880" y="252" text-anchor="middle">FOG</text>
+
+    <!-- cloud band that lowers -->
+    <g class="cloud-band">
+      <rect x="90" y="36" width="990" height="64" fill="url(#cloud)" rx="8"/>
+      <ellipse cx="260" cy="40" rx="120" ry="16" fill="#dce3e6" opacity=".6"/>
+      <ellipse cx="620" cy="38" rx="150" ry="14" fill="#dce3e6" opacity=".5"/>
+      <ellipse cx="930" cy="41" rx="110" ry="15" fill="#dce3e6" opacity=".55"/>
+    </g>
+
+    <!-- cloud base line -->
+    <g class="zb-line">
+      <line x1="90" y1="102" x2="1080" y2="102" stroke="#d9a441" stroke-width="1.6" stroke-dasharray="7 6"/>
+    </g>
+    <g class="zb-text">
+      <text class="zb-label" x="1078" y="94" text-anchor="end">cloud base  z_b</text>
+    </g>
+
+    <!-- fog fill near surface -->
+    <rect class="fogfill" x="90" y="150" width="990" height="80" fill="url(#fogg)"/>
+
+    <!-- sea surface -->
+    <line x1="70" y1="230" x2="1080" y2="230" stroke="#9db3bb" stroke-width="1.4"/>
+    <path d="M90 236 q14 -5 28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0"
+          stroke="#5b7a86" fill="none" stroke-width="1" opacity=".7"/>
+  </svg>
+</header>
+
+<main>
+<section id="research" class="wrap reveal">
+  <p class="sec-eyebrow">Research</p>
+  <h2>Simulating the marine fog life cycle, scale by scale</h2>
+  <p class="lede">
+    Fog remains one of the least predictable phenomena in meteorology because it lives at the
+    intersection of synoptic forcing, boundary-layer turbulence, and droplet-scale microphysics.
+    My doctoral work develops the <strong>L³ framework</strong> — a coupling of large-scale
+    dynamics, large-eddy simulation, and Lagrangian cloud modeling — to resolve that
+    intersection directly rather than parameterize it away.
+  </p>
+
+  <div class="pipeline">
+    <div class="stage">
+      <span class="stage-tag">Mesoscale</span>
+      <h3>Large-scale dynamics</h3>
+      <p>Python-based dynamic downscaling of ERA5 reanalysis and COAMPS forecasts supplies
+      time-varying, regional-scale forcing, so simulated events evolve under realistic
+      campaign-day conditions rather than idealized setups.</p>
+    </div>
+    <div class="stage">
+      <span class="stage-tag">Microscale</span>
+      <h3>Wall-modeled LES</h3>
+      <p>A high-performance parallel FORTRAN/MPI LES solver resolves the
+      turbulence–radiation–entrainment interplay that governs stratus lowering, fog-top
+      cooling, deep convection, and dissipation in the marine boundary layer.</p>
+    </div>
+    <div class="stage">
+      <span class="stage-tag">Droplet scale</span>
+      <h3>Lagrangian &amp; bulk microphysics</h3>
+      <p>Lagrangian computational droplets track activation, condensational growth,
+      coalescence, and precipitation formation along real trajectories, complemented by
+      bulk liquid- and ice-phase schemes for mixed-phase and ice-fog environments.</p>
+    </div>
+  </div>
+  <p class="pipeline-note">mesoscale forcing → LES turbulence → droplet trajectories, two-way coupled</p>
+
+  <div class="campaigns">
+    <span class="chip">FATIMA · Grand Banks 2022</span>
+    <span class="chip">FATIMA · Yellow Sea 2023</span>
+    <span class="chip">MAGPIE · Barbados</span>
+    <span class="chip">ARM · North Slope of Alaska</span>
+  </div>
+  <p style="margin-top:22px;max-width:68ch">
+    The framework is validated against multi-platform observations — W-band radar, ceilometer
+    and lidar retrievals, surface energy fluxes, and precipitation records. Applications span a
+    stratus-lowering fog event during FATIMA Yellow Sea IOP-5, deep convection over Barbados
+    forced by an African Easterly Wave that operational global models failed to capture, and
+    Arctic ice-fog life cycles at the ARM North Slope of Alaska site.
+  </p>
+</section>
+
+<section id="projects" class="wrap reveal">
+  <p class="sec-eyebrow">Projects</p>
+  <h2>AI/ML projects</h2>
+  <div class="proj-grid">
+    <div class="proj">
+      <span class="proj-tag">Surrogate Modeling</span>
+      <h3>AI/ML surrogates for physics-based simulation with uncertainty quantification</h3>
+      <ul>
+        <li>Developed data-driven surrogate (reduced-order) models to rapidly predict aerodynamic quantities across a continuous parameter space, replacing expensive physics-based simulations.</li>
+        <li>Automated simulation workflows using cloud-based APIs and incorporated uncertainty quantification to estimate prediction confidence across the design range.</li>
+      </ul>
+      <div class="proj-skills">
+        <span>Reduced-order modeling</span><span>Uncertainty quantification</span><span>Python</span><span>Workflow automation</span>
+      </div>
+    </div>
+    <div class="proj">
+      <span class="proj-tag">Deep Learning</span>
+      <h3>Joint prediction modeling on QMNIST</h3>
+      <ul>
+        <li>Built a balanced, quality-controlled QMNIST dataset grouped by writer and digit class, with preprocessing, validation, and structured batching for training.</li>
+        <li>Designed a multi-path neural architecture with shared embeddings and masking logic to enforce predictive consistency across prediction paths.</li>
+        <li>Trained and evaluated with cross-entropy and constraint-based objectives, analyzing performance trends and loss decomposition.</li>
+      </ul>
+      <div class="proj-skills">
+        <span>PyTorch</span><span>Multi-task learning</span><span>Neural architecture design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="publications" class="wrap reveal">
+  <p class="sec-eyebrow">Publications</p>
+  <h2>Publications</h2>
+
+  <p class="pub-group">Journal articles</p>
+
+  <div class="pub">
+    <div class="pub-tag">QJRMS<br>2026</div>
+    <div class="pub-body">
+      <p><span class="authors">Lee, S., and Coauthors (incl. <strong>A. Barve</strong>)</span><br>
+      <span class="title">A review of the FATIMA Yellow Sea field campaign research</span><br>
+      <span class="venue">Quarterly Journal of the Royal Meteorological Society</span>, e70157 ·
+      <a class="doi" href="https://doi.org/10.1002/qj.70157">doi:10.1002/qj.70157</a></p>
+    </div>
+  </div>
+
+  <div class="pub">
+    <div class="pub-tag">QJRMS<br>2025</div>
+    <div class="pub-body">
+      <p><span class="authors"><strong>Barve, A.</strong>, I. Gultepe, H. J. S. Fernando, Q. Wang, and L. Shen</span><br>
+      <span class="title">Large-eddy simulation with Lagrangian cloud modeling and large-scale dynamics (L³) for studying the marine fog life cycle</span><br>
+      <span class="venue">Quarterly Journal of the Royal Meteorological Society</span>, 151(772), e5022 ·
+      <a class="doi" href="https://doi.org/10.1002/qj.5022">doi:10.1002/qj.5022</a></p>
+    </div>
+  </div>
+
+  <div class="pub">
+    <div class="pub-tag">BAMS<br>2025</div>
+    <div class="pub-body">
+      <p><span class="authors">Fernando, H. J. S., and Coauthors (incl. <strong>A. Barve</strong>)</span><br>
+      <span class="title">FATIMA-GB: Searching clarity within marine fog</span><br>
+      <span class="venue">Bulletin of the American Meteorological Society</span>, 106(6), E971–E1016 ·
+      <a class="doi" href="https://doi.org/10.1175/BAMS-D-23-0050.1">doi:10.1175/BAMS-D-23-0050.1</a></p>
+    </div>
+  </div>
+
+  <div class="pub">
+    <div class="pub-tag">PHYS. FLUIDS<br>2020<span class="pick">Editor's Pick</span></div>
+    <div class="pub-body">
+      <p><span class="authors"><strong>Barve, A. V.</strong>, et al.</span><br>
+      <span class="title">Effect of co-flow velocity ratio on evolution of poly-disperse particles in coaxial turbulent jets: A large-eddy simulation study</span><br>
+      <span class="venue">Physics of Fluids</span>, 32(9) ·
+      <a class="doi" href="https://doi.org/10.1063/5.0017663">doi:10.1063/5.0017663</a></p>
+    </div>
+  </div>
+
+  <p class="pub-group">In preparation</p>
+
+  <div class="pub">
+    <div class="pub-tag">WAF</div>
+    <div class="pub-body">
+      <p><span class="authors"><strong>Barve, A.</strong>, et al.</span>
+      <span class="title">Investigating stratus cloud lowering over the Yellow Sea using large-eddy simulation.</span>
+      <span class="venue">Weather and Forecasting.</span></p>
+    </div>
+  </div>
+
+  <div class="pub">
+    <div class="pub-tag">BLM</div>
+    <div class="pub-body">
+      <p><span class="authors"><strong>Barve, A.</strong>, et al.</span>
+      <span class="title">Investigating the impact of African Easterly Waves on the marine atmospheric boundary layer.</span>
+      <span class="venue">Boundary-Layer Meteorology.</span></p>
+    </div>
+  </div>
+
+  <div class="pub">
+    <div class="pub-tag">QJRMS</div>
+    <div class="pub-body">
+      <p><span class="authors"><strong>Barve, A.</strong>, et al.</span>
+      <span class="title">Large-eddy simulation of ice fog lifecycle over the North Slope of Alaska.</span>
+      <span class="venue">Quarterly Journal of the Royal Meteorological Society.</span></p>
+    </div>
+  </div>
+
+  <div class="pub">
+    <div class="pub-tag">BLM</div>
+    <div class="pub-body">
+      <p><span class="authors">Mittal, S., et al. (incl. <strong>A. Barve</strong>)</span>
+      <span class="title">Impact of coastal topography on marine boundary-layer structure and cloud formation at Ragged Point, Barbados.</span>
+      <span class="venue">Boundary-Layer Meteorology.</span></p>
+    </div>
+  </div>
+
+  <details class="conf">
+    <summary>SELECTED CONFERENCE PRESENTATIONS</summary>
+    <ul>
+      <li><strong>Barve, A.</strong>, et al. (2026). Investigating the effects of the African Easterly Wave on the marine atmospheric boundary layer using large-eddy simulation. <em>106th AMS Annual Meeting.</em></li>
+      <li><strong>Barve, A.</strong>, et al. (2026). Investigating the sensitivity of stratus lowering marine fog using large-eddy simulation. <em>106th AMS Annual Meeting.</em></li>
+      <li><strong>Barve, A.</strong>, et al. (2025). Bridging scales in marine fog: coupling large-eddy simulation with large-scale dynamics and microphysics. <em>AGU25.</em></li>
+      <li><strong>Barve, A.</strong>, et al. (2024). Investigation of stratus-fog transitions over Yellow Sea using large-eddy simulation coupled with large-scale dynamics and Lagrangian cloud model. <em>AGU24.</em></li>
+      <li><strong>Barve, A.</strong>, et al. (2023). Effect of radiative fluxes on the life cycle of marine fog: a large-eddy simulation study. <em>AGU23.</em></li>
+    </ul>
+  </details>
+</section>
+
+<section id="experience" class="wrap reveal">
+  <p class="sec-eyebrow">Experience &amp; Education</p>
+  <h2>Background</h2>
+
+  <div class="xp">
+    <div class="xp-when">Sep 2021 — Jul 2026 (exp.)</div>
+    <div>
+      <h3>PhD Candidate, Mechanical Engineering</h3>
+      <p class="org">University of Minnesota — Twin Cities · Advisor: Prof. Lian Shen</p>
+      <ul>
+        <li>Dissertation: exploring cloud and fog processes through multi-scale coupled modeling frameworks.</li>
+        <li>Developed a parallel FORTRAN/MPI LES solver with SLURM-based workflow automation for scalable HPC deployment; Lagrangian and bulk (liquid + ice) cloud microphysics.</li>
+        <li>Built Python dynamic-downscaling workflows from ERA5 and COAMPS to force cloud-resolving and convection-permitting simulations.</li>
+        <li>Participated in the FATIMA and MAGPIE international field campaigns — proposal development, simulation planning, data analysis, and sponsor review meetings.</li>
+        <li>Teaching assistant for Thermodynamics, Fluid Mechanics, and Mechanical Measurements Laboratory.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="xp">
+    <div class="xp-when">Mar 2020 — Jun 2021</div>
+    <div>
+      <h3>Senior Executive</h3>
+      <p class="org">Siemens Ltd. · Goa, India</p>
+      <ul>
+        <li>Led development and testing of an electrical switchgear prototype to replace high-GWP SF₆-based systems, collaborating with interdisciplinary global teams.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="xp">
+    <div class="xp-when">Jul 2019 — Feb 2020</div>
+    <div>
+      <h3>ASPIRE Development Program</h3>
+      <p class="org">Baker Hughes · Bangalore, India</p>
+      <ul>
+        <li>Developed machine-learning predictive models for early gas-turbine failure detection, reducing downtime, replacement needs, and associated CO₂ emissions.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="xp">
+    <div class="xp-when">2017 — 2019</div>
+    <div>
+      <h3>M.Tech, Mechanical Engineering</h3>
+      <p class="org">Indian Institute of Technology, Madras</p>
+      <ul>
+        <li>Thesis: numerical study of particle-laden coaxial turbulent jets (LES/RANS in OpenFOAM, Eulerian–Lagrangian two-way coupling, subgrid-scale model development). Published as a Physics of Fluids Editor's Pick.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="xp">
+    <div class="xp-when">2010 — 2014</div>
+    <div>
+      <h3>B.E., Mechanical Engineering</h3>
+      <p class="org">Goa University</p>
+    </div>
+  </div>
+
+  <div class="awards">
+    <h3>Awards &amp; recognition</h3>
+    <ul>
+      <li><span>Best AOFD Student Poster Presentation — 106th AMS Annual Meeting</span><span class="yr">2026</span></li>
+      <li><span>Adrian ME Graduate Student Travel Award — University of Minnesota</span><span class="yr">2026</span></li>
+      <li><span>Charles C. S. Song Fellowship — St. Anthony Falls Laboratory</span><span class="yr">2025</span></li>
+      <li><span>Ministry of Human Resources &amp; Development Fellowship — IIT Madras</span><span class="yr">2017–2019</span></li>
+      <li><span>GATE — 99.73 percentile among 200,000 candidates</span><span class="yr">2016</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="skills" class="wrap reveal">
+  <p class="sec-eyebrow">Skills</p>
+  <h2>Methods &amp; tools</h2>
+  <div class="skill-grid">
+    <div class="skill-col">
+      <h3>Modeling &amp; theory</h3>
+      <ul>
+        <li>Large-eddy simulation (LES)</li>
+        <li>Lagrangian &amp; bulk cloud microphysics</li>
+        <li>Mesoscale–microscale coupling</li>
+        <li>ERA5 reanalysis · COAMPS downscaling</li>
+        <li>Finite difference / finite volume methods</li>
+        <li>Reduced-order modeling · UQ</li>
+      </ul>
+    </div>
+    <div class="skill-col">
+      <h3>Computing</h3>
+      <ul>
+        <li>FORTRAN · Python · C/C++ · MATLAB</li>
+        <li>MPI · OpenMP · SLURM · bash</li>
+        <li>PyTorch · surrogate modeling · Bayesian optimization</li>
+        <li>OpenFOAM · ANSYS Fluent · custom solvers</li>
+        <li>Git/GitHub · CMake · Linux</li>
+      </ul>
+    </div>
+    <div class="skill-col">
+      <h3>Observations &amp; analysis</h3>
+      <ul>
+        <li>Radar, lidar &amp; surface-flux data analysis</li>
+        <li>Model–observation validation</li>
+        <li>Field-campaign data (FATIMA, MAGPIE, ARM)</li>
+        <li>Statistical methods</li>
+        <li>ParaView · Tecplot · Matplotlib/Cartopy</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <p class="sec-eyebrow">Contact</p>
+    <h2>Get in touch</h2>
+    <p style="max-width:56ch;color:#cfdade">
+      I'm on the job market — graduating July 2026 and open to research scientist,
+      postdoctoral, and computational science roles in atmospheric modeling, wind energy,
+      and high-fidelity CFD.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:anup5barve@gmail.com">anup5barve@gmail.com</a>
+      <a href="https://scholar.google.com/scholar?q=author:%22Anup+Barve%22">Google Scholar</a>
+      <a href="https://www.linkedin.com/in/anupvbarve">LinkedIn</a>
+      <a href="https://github.com/anupbarve">GitHub</a>
+    </div>
+    <p class="colophon">© 2026 Anup Barve · anupbarve.github.io</p>
+  </div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
