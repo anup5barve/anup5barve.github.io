@@ -295,13 +295,21 @@ footer .sec-eyebrow{color:var(--amber)}
 <main>
 <section id="research" class="wrap reveal">
   <p class="sec-eyebrow">Research</p>
-  <h2>Simulating the marine fog life cycle, scale by scale</h2>
+  <h2>Simulating complex atmospheric phenomena using a multiscale coupling framework</h2>
   <p class="lede">
-    Fog remains one of the least predictable phenomena in meteorology because it lives at the
-    intersection of synoptic forcing, boundary-layer turbulence, and droplet-scale microphysics.
-    My doctoral work develops the <strong>L³ framework</strong> — a coupling of large-scale
-    dynamics, large-eddy simulation, and Lagrangian cloud modeling — to resolve that
-    intersection directly rather than parameterize it away.
+    Atmospheric processes such as fog and clouds are among the hardest things to predict
+    in weather forecasting, because they sit at the meeting point of three very different
+    scales: large-scale weather patterns, turbulent mixing in the lowest kilometer of the
+    atmosphere, and the microphysics of individual cloud droplets. No computer is powerful
+    enough to simulate all of these scales together directly. Large-eddy simulation (LES)
+    offers a high-resolution view of boundary-layer turbulence, but on its own it has no
+    knowledge of the larger weather systems driving an event. To bridge this gap, I
+    developed a coupled <strong>LES–Large-Scale Dynamics (LES–LSD) framework</strong>
+    that feeds realistic, evolving weather conditions into high-resolution simulations.
+    I then extended it with two cloud modeling approaches: a Lagrangian cloud model that
+    tracks individual droplets (the <strong>L³ coupling</strong>), and a computationally
+    cheaper bulk cloud model (the <strong>LLB coupling</strong>). Together, these let a
+    single framework capture how real fog and cloud events form, evolve, and dissipate.
   </p>
 
   <div class="pipeline">
@@ -339,9 +347,20 @@ footer .sec-eyebrow{color:var(--amber)}
       bulk liquid- and ice-phase schemes for mixed-phase and ice-fog environments.</p>
     </div>
   </div>
-  <p class="pipeline-note">mesoscale forcing → LES turbulence → droplet trajectories, two-way coupled</p>
 
-  <h2 style="margin-top:64px">Field campaigns</h2>
+  <h2 style="margin-top:64px">Applyling the framework to real events</h2>
+  <p class="lede" style="margin-bottom:34px">
+    The framework is validated against multi-platform observations — W-band radar,
+    ceilometer and lidar retrievals, surface energy fluxes, and precipitation records —
+    collected during two international field campaigns: <strong>FATIMA</strong> (Fog and
+    Turbulence Interactions in the Marine Atmosphere) and <strong>MAGPIE</strong>
+    (Moisture and Aerosol Gradients/Physics of Inversion Evolution). Applications span a
+    stratus-lowering fog event during FATIMA Yellow Sea IOP-5, deep convection over
+    Barbados forced by an African Easterly Wave that operational global models failed to
+    capture, and Arctic ice-fog life cycles at the ARM North Slope of Alaska site.
+  </p>
+
+  
   <div class="proj-carousel">
   <div class="proj-nav">
     <button class="proj-btn proj-prev" aria-label="Previous campaigns">&lt;</button>
@@ -376,7 +395,7 @@ footer .sec-eyebrow{color:var(--amber)}
       <p style="font-size:.93rem;color:#33454e">[Placeholder — 2–3 sentences on African Easterly Wave–forced convection over Barbados and coastal topography effects at Ragged Point.]</p>
     </div>
     <div class="proj">
-      <span class="proj-tag">ARM · North Slope of Alaska</span>
+      <span class="proj-tag">FATIMA· Ice Fog 2025</span>
       <div class="fig">
         <span class="fig-note">add images/arm-nsa.png</span>
         <img src="images/arm-nsa.png" alt="ARM North Slope of Alaska site" onerror="this.remove()">
@@ -386,13 +405,7 @@ footer .sec-eyebrow{color:var(--amber)}
     </div>
   </div>
   </div>
-  <p style="margin-top:22px;max-width:68ch">
-    The framework is validated against multi-platform observations — W-band radar, ceilometer
-    and lidar retrievals, surface energy fluxes, and precipitation records. Applications span a
-    stratus-lowering fog event during FATIMA Yellow Sea IOP-5, deep convection over Barbados
-    forced by an African Easterly Wave that operational global models failed to capture, and
-    Arctic ice-fog life cycles at the ARM North Slope of Alaska site.
-  </p>
+
 
   <h2 style="margin-top:64px">Particle-laden coaxial turbulent jets</h2>
   <div class="split">
